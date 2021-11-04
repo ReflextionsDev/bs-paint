@@ -15,7 +15,7 @@
  * To make the second one happen, the number to change
  * is the first argument to `repeat`, currently set at 10.
  */
-const gridWidth = 10;
+const gridWidth = 25;
 let count = 0;
 while (count <= gridWidth * gridWidth) {
   const canvas = document.querySelector('.canvas');
@@ -49,12 +49,20 @@ while (count <= gridWidth * gridWidth) {
 const colors = document.querySelectorAll('.palette-color')
 const brush = document.querySelector('.current-brush')
 const canvas = document.querySelectorAll('.square')
-
+const page = document.querySelector('html')
 
 
 /****************************
  * EVENT LISTENER FUNCTIONS *
 ****************************/
+
+page.addEventListener('mousedown', () => {
+  mouseDown = true
+})
+
+page.addEventListener('mouseup', () => {
+  mouseDown = false
+})
 
 colors.forEach(function (element) {
   element.addEventListener('click', function () {
@@ -64,7 +72,17 @@ colors.forEach(function (element) {
 
 canvas.forEach(element =>
   element.addEventListener('click', () => {
+
     element.classList.replace(element.classList[1], currentColor)
+    mouseDown = false
+  })
+)
+
+canvas.forEach(element =>
+  element.addEventListener('mouseenter', () => {
+    if (mouseDown) {
+      element.classList.replace(element.classList[1], currentColor)
+    }
   })
 )
 
@@ -73,8 +91,14 @@ canvas.forEach(element =>
 **************************/
 
 let currentColor = brush.classList[1]
+let mouseDown = false
 
 function updateBrush(newColor) {
   brush.classList.replace(currentColor, newColor)
   currentColor = newColor
 }
+
+
+// To Do
+// - Shift click to set background colors
+// - Fix hold and drag problem
